@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>搜索商品</title>
+		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+		<script src="../js/jquery-1.8.3.min.js"></script>
+		<style type="text/css">
+			* {
+				font-family: "微软雅黑";
+				margin: 0px;
+				padding: 0px;
+				font-size: 14px;
+				color: #666;
+			}
+			body {
+				background-color: white;
+			}
+			
+			li {
+				display: inline;
+			}
+			
+			textarea {
+				width: 100%;
+				outline: none;
+				resize: none
+			}
+			
+			table {
+				border-spacing: 0px;
+				width: 100%;
+			}
+			
+			a {
+				text-decoration: none;
+			}
+			
+			body {
+				background-color: #fff;
+			}
+			
+			.ovfHiden {
+				overflow: hidden;
+				height: 100%;
+			}
+			/*input{border: none;}*/
+			
+			input:focus {
+				color: #666;
+				border: 1px solid #f1f1f1;
+				background-color: #fff;
+				outline: none;
+			}
+			
+			.head {
+				position: fixed;
+				top: 0px;
+				width: 100%;
+				background-color: #fff;
+				z-index: 500;
+			}
+			
+			.head_l {
+				text-align: center;
+				padding: 10px 0px;
+				position: relative;
+				border-bottom: 8px solid #f1f1f1;
+			}
+			
+			.back {
+				float: left;
+				position: absolute;
+				left: 15px;
+				top: 5px;
+			}
+			
+			.back img {
+				width: 25px;
+			}
+			
+			.login_head {
+				font-size: 16px;
+			}
+			
+			.register_on {
+				position: absolute;
+				right: 15px;
+				top: 10px;
+			}
+			/*body*/
+			
+			.body {
+				margin: 50px 0px;
+			}
+			.choice_head{
+				 display: flex; 
+				 border-bottom: 1px solid #f1f1f1;
+				 background-color: #f1f1f1;
+			}
+			.choice_head div{
+				border-right: 2px solid #fff;
+				padding: 5px;
+				text-align: center;
+				 flex: 1 1 auto;
+			}
+			.choice_head div:last-child{
+				border-right:0px
+			}
+			.choice_body{
+				padding:0px 10px;
+			}
+			.choice_li {
+				padding: 10px 0px;
+				height: 83px;
+				display: inline-block;
+				border-bottom:1px solid #f1f1f1 ;
+			}
+			.choice_li img{
+				width: 80px;
+				height: 80px;
+				position: absolute;
+			}
+			.choice_p{
+				margin-left:100px ;
+				display: inline-block;
+			}
+			.choice_p p:nth-child(1){
+				height: 40px;
+				overflow: hidden;
+			}
+			.choice_p p:nth-child(2){
+				font-size: 12px;
+				color: #cdcdcd;
+			}
+			.choice_p p:nth-child(2) span{
+				font-size: 12px;
+				color: #cdcdcd;
+			}
+			.choice_p p:nth-child(3) span{
+				color: #cc0000;
+			}
+			.choice_sharp{
+				position: relative;
+			}
+			.choice_sharp img{
+				width: 8px;
+				height: 8px;
+				position: absolute;
+			}
+			.choice_sharp img:nth-child(2){
+				top: 7px;
+				right: 20px;
+			}
+			.choice_sharp img:nth-child(1){
+				top: 15px;
+				right: 20px;
+			}
+			.choice_screen img{
+				width: 10px;
+				height: 10px;
+			}
+			.choice_xu{
+				color: #0A79E5;
+				border-bottom: 1px solid #0A79E5;
+			}
+			/*弹窗*/
+			.choice_black{
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				background-color: rgba(0,0,0,0.5);
+				width: 100%;
+				height: 100%;
+				z-index: 500;
+			}
+			.choice_pop{
+				width: 300px;
+				height: 100%;
+				float: right;
+				background-color: #fff;
+			}
+			.choice_pop_li {
+				border: 1px solid #f1f1f1;
+				width: 280px;
+				display: inline-block;
+				padding: 10px;
+			}
+			.choice_pop_li img{
+				width: 20px;
+				float: right;
+			}
+			.choice_pop_h{
+				padding: 10px;
+				text-align: center;
+				background-color: #f1f1f1;
+			}
+			.choice_pop_h1{
+				float: left;
+			}
+			.choice_pop_i{
+				float: right;
+				color: #0A79E5;
+			}
+			.choice_pop_f{
+				position: absolute;
+				bottom: 10px;
+				padding: 10px;
+			}
+			.choice_pop_but1{
+				background-color: #f1f1f1;
+				padding: 10px 30px;
+				display: inline-block;
+			}
+		</style>
+		<script type="text/javascript">
+			function choice_head(ob){
+				$(".choice_head").find("div").removeClass("choice_xu");
+				$(".sharp_down").css("display","block").attr("src","../img/down2.png");
+				$(".sharp_up").css("display","block").attr("src","../img/up2.png");
+				$(ob).addClass("choice_xu");
+			}
+			function price(){
+				$(".choice_head").find("div").removeClass("choice_xu");
+				$(".choice_sharp").addClass("choice_xu");
+				 if($(".choice_sharp").attr("uname")==1){
+					$(".sharp_down").css("display","block").attr("src","../img/down3.png");
+					$(".sharp_up").css("display","none");
+					$(".choice_sharp").attr("uname","2");
+				}
+				else if($(".choice_sharp").attr("uname")==2){
+					$(".sharp_up").css("display","block").attr("src","../img/up3.png");
+					$(".sharp_down").css("display","none");
+					$(".choice_sharp").attr("uname","1");
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<!--头部-->
+		<div class="head">
+			<div class="head_l">
+				<a href="javascript:history.back(-1);" class="back"><img src="../img/left.png" /></a>
+				<div>
+					<span class="login_head">搜索商品</span>
+				</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="choice_head">
+				<div class="choice_xu" onclick="choice_head(this)">综合排序</div>
+				<div class="choice_sharp" onclick="price()" uname="1">价格优先<img src="../img/down2.png" class="sharp_down"/><img src="../img/up2.png" class="sharp_up"/></div>
+				<div class="choice_screen" onclick="choice_head(this)">筛选 <img src="../img/screen.png"/></div>
+			</div>
+			<div class="choice_body">
+				<ul>
+					<li class="choice_li">
+						<img src="../img/2017.jpg"/>
+						<div class="choice_p">
+							<p>钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片</p>
+							<p>规格：<span>256g</span></p>
+							<p><span>￥</span><span >26.44</span></p>
+						</div>
+					</li>
+					<li class="choice_li">
+						<img src="../img/2017.jpg"/>
+						<div class="choice_p">
+							<p>钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片</p>
+							<p>规格：<span>256g</span></p>
+							<p><span>￥</span><span >26.44</span></p>
+						</div>
+					</li>
+					<li class="choice_li">
+						<img src="../img/2017.jpg"/>
+						<div class="choice_p">
+							<p>钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片</p>
+							<p>规格：<span>256g</span></p>
+							<p><span>￥</span><span >26.44</span></p>
+						</div>
+					</li>
+					<li class="choice_li">
+						<img src="../img/2017.jpg"/>
+						<div class="choice_p">
+							<p>钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片钙尔奇跑碳酸钙主角片</p>
+							<p>规格：<span>256g</span></p>
+							<p><span>￥</span><span >26.44</span></p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="choice_black">
+				<div class="choice_pop">
+					<div class="choice_pop_h">
+						<span class="choice_pop_h1">取消</span>
+						<span>筛选</span>
+					</div>
+					<div class="choice_pop_b">
+						<ul>
+							<li class="choice_pop_li">
+								<span>产品类型</span>
+								<img src="../img/right (1).png"/>
+								<span class="choice_pop_i">湖南一格</span>
+							</li>
+							<li class="choice_pop_li">
+								<span>适应范围</span>
+								<img src="../img/right (1).png"/>
+								<span class="choice_pop_i">湖南一格</span>
+							</li>
+							<li class="choice_pop_li">
+								<span>对应症</span>
+								<img src="../img/right (1).png"/>
+								<span class="choice_pop_i">湖南一格</span>
+								
+							</li>
+						</ul>
+					</div>
+					<div class="choice_pop_f">
+						<div class="choice_pop_but1">
+							重置
+						</div>
+						<div class="choice_pop_but2">
+							确定
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
